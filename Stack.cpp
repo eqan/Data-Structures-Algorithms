@@ -27,7 +27,7 @@ public:
         head = temp;
     }
 
-    node *pop(node *head)
+    node *pop()
     {
         node *temp = head;
         head = head->next;
