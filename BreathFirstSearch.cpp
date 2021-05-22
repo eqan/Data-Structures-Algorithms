@@ -28,7 +28,7 @@ public:
 Graph::Graph(int V)
 {
 	this->V = V;
-    visited = new bool[V];
+  visited = new bool[V];
 	adj = new list<int>[V];
 	for(int i = 0; i < V; i++)
 		visited[i] = false;

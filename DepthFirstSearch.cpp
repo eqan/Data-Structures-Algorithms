@@ -1,93 +1,62 @@
-// C++ implementation of the approach 
-// NOTE Using the Adjacency Matrix Technique
-#include <iostream>
-#include <vector>
-using namespace std; 
+// C++ program to print DFS traversal from
+// a given vertex in a given graph
+#include <bits/stdc++.h>
+using namespace std;
 
-class Graph { 
+// Graph class represents a directed graph
+// using adjacency list representation
+class Graph
+{
+public:
+	map<int, bool> visited;
+	map<int, list<int>> adj;
 
-	// Number of vertex 
-	int v; 
+	// function to add an edge to graph
+	void addEdge(int v, int w);
 
-	// Number of edges 
-	int e; 
+	// DFS traversal of the vertices
+	// reachable from v
+	void DFS(int v);
+};
 
-	// Adjacency matrix 
-	int** adj; 
+void Graph::addEdge(int v, int w)
+{
+	adj[v].push_back(w); // Add w to v’s list.
+}
 
-public: 
-	// To create the initial adjacency matrix 
-	Graph(int v, int e); 
+void Graph::DFS(int v)
+{
+	// Mark the current node as visited and
+	// print it
+	visited[v] = true;
+	cout << v << " ";
 
-	// Function to insert a new edge 
-	void addEdge(int start, int e); 
+	// Recur for all the vertices adjacent
+	// to this vertex
+	list<int>::iterator i;
+	for (i = adj[v].begin(); i != adj[v].end(); ++i)
+		if (!visited[*i])
+			DFS(*i);
+}
 
-	// Function to display the DFS traversal 
-	void DFS(int start, vector<bool>& visited); 
-}; 
+// Driver code
+int main()
+{
+	// Create a graph given in the above diagram
+	Graph g;
+	g.addEdge(0, 1);
+	g.addEdge(0, 9);
+	g.addEdge(1, 2);
+	g.addEdge(2, 0);
+	g.addEdge(2, 3);
+	g.addEdge(9, 3);
 
-// Function to fill the empty adjacency matrix 
-Graph::Graph(int v, int e) 
-{ 
-	this->v = v; 
-	this->e = e; 
-	adj = new int*[v]; 
-	for (int row = 0; row < v; row++) { 
-		adj[row] = new int[v]; 
-		for (int column = 0; column < v; column++) { 
-			adj[row][column] = 0; 
-		} 
-	} 
-} 
+	cout << "Following is Depth First Traversal"
+			" (starting from vertex 2) \n";
+	g.DFS(2);
 
-// Function to add an edge to the graph 
-void Graph::addEdge(int start, int e) 
-{ 
+	return 0;
+}
 
-	// Considering a bidirectional edge 
-	adj[start][e] = 1; 
-	adj[e][start] = 1; 
-} 
+// improved by Vishnudev C
 
-// Function to perform DFS on the graph 
-void Graph::DFS(int start, vector<bool>& visited) 
-{ 
-
-	// Print the current node 
-	cout << start << " "; 
-
-	// Set current node as visited 
-	visited[start] = true; 
-
-	// For every node of the graph 
-	for (int i = 0; i < v; i++) { 
-
-		// If some node is adjacent to the current node 
-		// and it has not already been visited 
-		if (adj[start][i] == 1 && (!visited[i])) { 
-			DFS(i, visited); 
-		} 
-	} 
-} 
-
-// Driver code 
-int main() 
-{ 
-	int v = 5, e = 4; 
-
-	// Create the graph 
-	Graph G(v, e); 
-	G.addEdge(0, 1); 
-	G.addEdge(0, 2); 
-	G.addEdge(0, 3); 
-	G.addEdge(0, 4); 
-
-	// Visited vector to so that 
-	// a vertex is not visited more than once 
-	// Initializing the vector to false as no 
-	// vertex is visited at the beginning 
-	vector<bool> visited(v, false); 
-
-	// Perform DFS 
-	G.DFS(0, visited); 
-} 
